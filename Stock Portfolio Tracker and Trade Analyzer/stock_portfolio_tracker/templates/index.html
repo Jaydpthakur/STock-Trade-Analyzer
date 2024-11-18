@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Portfolio Tracker & Trade Analyzer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Stock Portfolio Tracker & Trade Analyzer</h1>
+    </header>
+    <section class="portfolio">
+        <h2>Portfolio Value</h2>
+        <p>Current Portfolio Value: ${{ portfolio_value }}</p>
+        <p>Start Value (from Historical Data): ${{ start_value }}</p>
+        <p>End Value (from Historical Data): ${{ end_value }}</p>
+        <p>Performance: {{ percent_change }}%</p>
+    </section>
+    <section class="trade-signals">
+        <h2>Trade Signals (Moving Average Crossover)</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Stock</th>
+                    <th>Action</th>
+                    <th>Date</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for symbol, signals in buy_sell_signals.items() %}
+                    {% for action, date, price in signals %}
+                        <tr>
+                            <td>{{ symbol }}</td>
+                            <td>{{ action }}</td>
+                            <td>{{ date }}</td>
+                            <td>${{ price }}</td>
+                        </tr>
+                    {% endfor %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+    <section class="trade-history">
+        <h2>Trade History</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Action</th>
+                    <th>Stock</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Capital After Trade</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for action, symbol, quantity, price, capital in trade_history %}
+                    <tr>
+                        <td>{{ action }}</td>
+                        <td>{{ symbol }}</td>
+                        <td>{{ quantity }}</td>
+                        <td>${{ price }}</td>
+                        <td>${{ capital }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+    <footer>
+        <p>Data fetched using Yahoo Finance API</p>
+    </footer>
+</body>
+</html>
